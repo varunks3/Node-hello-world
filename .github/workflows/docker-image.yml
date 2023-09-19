@@ -2,25 +2,25 @@ name: Docker Image CI
 
 on:
   push:
-    branches: 
-      - master
-
+    branches: [master]
+  pull_request:
+    branches: [ master ]
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v2
     - name: docker login
       env:
-        DOCKER USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build-file Dockerfiletag varunks3/node-hello-world:$ github.sha}}
+      run: docker build . --file Dockerfile --tag varunks3/node- test:$(date +%s)
 
     - name: Docker Push
-      run: docker push varunks3/node-hello-world:${{ github.sha}}
+      run: docker push ${{secrets.DOCKER_USER}}/node-hello-world
